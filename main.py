@@ -16,9 +16,14 @@ def cases() -> int:
 
 
 def notify(last_cases: int, new_cases: int):
-    os.system("""
-              osascript -e 'display dialog "{}" with title "{}" buttons {{"Ok"}}'
-              """.format('Cases {} -> {}'.format(last_cases, new_cases), 'NU COVID-19'))
+    script = '''
+    display dialog "Cases {} -> {}" with title "NU COVID-19" buttons {{"Open Site", "Dismiss"}} 
+    set the button_pressed to the button returned of the result
+    if the button_pressed is "Open Site" then
+        open location "https://www.northwestern.edu/coronavirus-covid-19-updates/developments/confirmed-cases.html"
+    end if
+    '''.format(last_cases, new_cases)
+    os.system("osascript -e '{}'".format(script))
 
 
 if __name__ == "__main__":
